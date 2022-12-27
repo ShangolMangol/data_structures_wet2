@@ -16,12 +16,20 @@
 #define WORLDCUP23A2_H_
 
 #include "wet2util.h"
+#include "AVLTree.h"
+#include "HashTable.h"
+#include "Player.h"
+#include "Team.h"
+#include "CompareTeamById.h"
+#include "CompareTeamByAbility.h"
+#include "ComparePlayerById.h"
 
 class world_cup_t {
 private:
-	//
-	// Here you may add anything you want
-	//
+	AVLTree<std::shared_ptr<Team>, CompareTeamById> teamsById;
+    AVLTree<std::shared_ptr<Team>, CompareTeamByAbility> teamsByAbility;
+    HashTable<std::shared_ptr<Player>, ComparePlayerById> allPlayers;
+    int totalPlayers;
 	
 public:
 	// <DO-NOT-MODIFY> {

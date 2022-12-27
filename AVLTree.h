@@ -337,6 +337,12 @@ public:
 
     }
 
+    AVLNode<T>* deleteRoot()
+    {
+        this->root = deleteNode(this->root, this->root->data);
+        return this->root;
+    }
+
     AVLNode<T>* findRightestSon(AVLNode<T>* node){
         if(node == nullptr)
             return nullptr;
