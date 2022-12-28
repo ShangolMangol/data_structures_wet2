@@ -148,8 +148,17 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 
 output_t<int> world_cup_t::num_played_games_for_player(int playerId)
 {
-	// TODO: Your code goes here
-	return 22;
+	if(playerId <= 0)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Player> player = allPlayers.find(playerId);
+    if(player == nullptr)
+        return StatusType::FAILURE;
+
+    Player* root = player->getRootUpdateRootPath();
+    if(root == nullptr)
+        return player->gamesPlayedAux;
+    return player->gamesPlayedAux + root->gamesPlayedAux;
 }
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
