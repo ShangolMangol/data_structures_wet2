@@ -384,6 +384,33 @@ public:
 
     }
 
+    AVLNode<T>* getIthNode(int position)
+    {
+        int sum = 0;
+        return getIthNodeAux(this->root, position, &sum);
+    }
+
+    AVLNode<T>* getIthNodeAux(AVLNode<T>* current, int position, int* sum)
+    {
+        if(current == nullptr)
+            return nullptr;
+
+        if(*sum + current->sizeLeft + 1 < position)
+        {
+            *sum += current->sizeLeft + 1;
+            return getIthNodeAux(current->right, position, sum);
+        }
+        else if (*sum + current->sizeLeft + 1 > position)
+        {
+            return getIthNodeAux(current->left, position, sum);
+        }
+        else
+        {
+            return current;
+        }
+//        return nullptr;
+    }
+
 
     void deletePostorder(AVLNode<T>* node)
     {

@@ -111,6 +111,10 @@ output_t<int> world_cup_t::play_match(int teamId1, int teamId2)
 
     int score1 = team1->points + team1->totalAbility, score2 = team2->points + team2->totalAbility;
 
+    team1->rootPlayer->gamesPlayedAux += 1;
+    team2->rootPlayer->gamesPlayedAux += 1;
+
+
     if(score1 < score2)
     {
         team2->points += 3;
@@ -163,36 +167,139 @@ output_t<int> world_cup_t::num_played_games_for_player(int playerId)
 
 StatusType world_cup_t::add_player_cards(int playerId, int cards)
 {
-	// TODO: Your code goes here
+    if(playerId <=0 || cards < 0)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Player> player = allPlayers.find(playerId);
+    if(player == nullptr)
+        return StatusType::FAILURE;
+
+    Player* root = player->getRootUpdateRootPath();
+    if(root == nullptr) //player is the root
+    {
+        if(player->teamPointer == nullptr) //is team deleted
+        {
+            return StatusType::FAILURE;
+        }
+        else
+        {
+            player->cards += cards;
+            return StatusType::SUCCESS;
+        }
+    }
+
+    if(root->teamPointer == nullptr)
+    {
+        return StatusType::FAILURE;
+    }
+    else
+    {
+        player->cards += cards;
+        return StatusType::SUCCESS;
+    }
+
+
 	return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::get_player_cards(int playerId)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
+    if(playerId <=0)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Player> player = allPlayers.find(playerId);
+    if(player == nullptr)
+        return StatusType::FAILURE;
+
+    player->getRootUpdateRootPath();
+    return player->cards;
 }
 
 output_t<int> world_cup_t::get_team_points(int teamId)
 {
-	// TODO: Your code goes here
-	return 30003;
+    if(teamId <= 0)
+        return StatusType::INVALID_INPUT;
+
+    AVLNode<shared_ptr<Team>>* teamNode = teamsById.findNode(teamsById.root, teamId);
+    if(teamNode == nullptr)
+        return StatusType::FAILURE;
+
+    return teamNode->data->points;
 }
 
 output_t<int> world_cup_t::get_ith_pointless_ability(int i)
 {
-	// TODO: Your code goes here
-	return 12345;
+	if(i < 0)
+        return StatusType::FAILURE;
+    AVLNode<shared_ptr<Team>>* teamNode = teamsById.getIthNode(i + 1);
+    if(teamNode == nullptr)
+        return StatusType::FAILURE;
+
+    return teamNode->data->teamId;
 }
 
 output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)
 {
-	// TODO: Your code goes here
-	return permutation_t();
+    if(playerId <= 0)
+        return StatusType::INVALID_INPUT;
+
+    shared_ptr<Player> player = allPlayers.find(playerId);
+    if(player == nullptr)
+        return StatusType::FAILURE;
+
+    Player* root = player->getRootUpdateRootPath();
+
+    if(root == nullptr)
+    {
+        return player->spiritAux;
+    }
+    else
+    {
+        return root->spiritAux * player->spiritAux;
+    }
 }
 
 StatusType world_cup_t::buy_team(int teamId1, int teamId2)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
+    //teamId1 is buyer, teamId2 is bought
+    if(teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2)
+        return StatusType::INVALID_INPUT;
+
+    AVLNode<shared_ptr<Team>>* teamNode1 = teamsById.findNode(teamsById.root, teamId1);
+    if(teamNode1 == nullptr)
+        return StatusType::FAILURE;
+    AVLNode<shared_ptr<Team>>* teamNode2 = teamsById.findNode(teamsById.root, teamId2);
+    if(teamNode2 == nullptr)
+        return StatusType::FAILURE;
+
+    shared_ptr<Team> team1 = teamNode1->data, team2 = teamNode2->data;
+
+    try {
+        teamsById.root = teamsById.deleteNode(teamsById.root, teamId2);
+        teamsByAbility.root = teamsByAbility.deleteNode(teamsByAbility.root, team1);
+        teamsByAbility.root = teamsByAbility.deleteNode(teamsByAbility.root, team2);
+
+        team1->buyTeam(team2.get());
+
+        teamsByAbility.root = teamsByAbility.insert(teamsByAbility.root, team1);
+
+    }
+    catch (std::bad_alloc& e)
+    {
+        return StatusType::ALLOCATION_ERROR;
+    }
+
+    return StatusType::SUCCESS;
+
+
 }
+
+
+
+
+
+
+
+
+
+

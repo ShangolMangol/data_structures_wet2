@@ -23,6 +23,7 @@ public:
 //    bool isCompeting;
     Player* rootPlayer;
 
+    void buyTeam(Team* boughtTeam);
 };
 
 

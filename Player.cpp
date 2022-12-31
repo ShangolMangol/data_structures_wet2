@@ -6,8 +6,8 @@
 #include "Team.h"
 
 Player::Player(int playerId, const permutation_t permutation, int i1, int i2, int i3, bool b, Player *pPlayer,
-               Team *pTeam) : playerId(playerId), spirit(permutation),
-               gamesPlayed(i1), ability(i2), cards(i3), isGoalkeeper(b), parent(pPlayer)
+               Team *pTeam) : playerId(playerId), gamesPlayed(i1), spirit(permutation),
+               ability(i2), cards(i3), isGoalkeeper(b), parent(pPlayer)
 {
     if(parent == nullptr)
     {

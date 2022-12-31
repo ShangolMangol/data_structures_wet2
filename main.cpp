@@ -69,13 +69,12 @@ int main()
     HashTable<shared_ptr<Player>, ComparePlayerById> players;
     for(int i = 1; i < 45; i++)
     {
-        shared_ptr<Player> newPlayer = shared_ptr<Player>(new Player(i, 0, permutation_t(), 0, 0, 0, false, nullptr,
+        shared_ptr<Player> newPlayer = shared_ptr<Player>(new Player(i, permutation_t(), 0, 0, 0, false, nullptr,
                                                                      nullptr));
         players.insert(newPlayer);
     }
-    shared_ptr<Player> newPlayer1 = shared_ptr<Player>(new Player(888, 0, permutation_t(), 0, 0, 0, false, nullptr,
-                                                                  nullptr));
-    shared_ptr<Player> newPlayer2 = shared_ptr<Player>(new Player(3546, 0, permutation_t(), 0, 0, 0, false, nullptr,
+    shared_ptr<Player> newPlayer1 = shared_ptr<Player>(new Player(888, permutation_t(), 0, 0, 0, false, nullptr, nullptr));
+    shared_ptr<Player> newPlayer2 = shared_ptr<Player>(new Player(3546, permutation_t(), 0, 0, 0, false, nullptr,
                                                                   nullptr));
     players.insert(newPlayer1);
     players.insert(newPlayer2);
