@@ -11,9 +11,9 @@
 class CompareTeamByAbility
 {
 public:
-    bool isLeftSmaller(std::shared_ptr<Team>& team, int currentAbility);
+//    bool isLeftSmaller(std::shared_ptr<Team>& team, int currentAbility);
     bool isLeftSmaller(std::shared_ptr<Team>& team, std::shared_ptr<Team>& currentTeam);
-    bool isEqual(std::shared_ptr<Team>& team, int currentAbility);
+//    bool isEqual(std::shared_ptr<Team>& team, int currentAbility);
     bool isEqual(std::shared_ptr<Team>& team, std::shared_ptr<Team>& currentTeam);
 };
 

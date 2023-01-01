@@ -16,7 +16,7 @@ public:
     int size;
     int numOfElements;
 
-    HashTable() : array(new AVLTree<T, Compare>[30]()), size(30), numOfElements(0)
+    HashTable() : array(new AVLTree<T, Compare>[31]()), size(31), numOfElements(0)
     {
 //        for (int i = 0; i < size; ++i) {
 //            array[i] = nullptr;
@@ -48,19 +48,14 @@ public:
 
     void rehashAndIncrease()
     {
-        AVLTree<T, Compare>* newArray = new AVLTree<T, Compare>[size*2]();
+        int previousSize = size;
+        AVLTree<T, Compare>* newArray = new AVLTree<T, Compare>[size*2 + 1]();
         AVLTree<T, Compare>* tempArray = array;
         array = newArray;
-        size = size*2;
+        size = size*2 + 1;
         numOfElements = 0;
 
-//        for (int i = 0; i < size*2; ++i)
-//        {
-//            newArray[i] = nullptr;
-//        }
-
-
-        for (int i = 0; i < size/2; ++i)
+        for (int i = 0; i < previousSize; ++i)
         {
             while(tempArray[i].root != nullptr)
             {
@@ -69,16 +64,6 @@ public:
                 tempArray[i].root = tempArray[i].deleteRoot();
             }
         }
-
-//        for (int i = 0; i < size; ++i)
-//        {
-//            while(array[i].root != nullptr)
-//            {
-//                newArray[i].root = newArray[i].insert(newArray[i].root,array[i].root->data);
-////                array[i].root = array[i].deleteNode(array[i].root, array[i].root->data);
-//                array[i].root = array[i].deleteRoot();
-//            }
-//        }
 
         delete[] tempArray;
     }

@@ -231,7 +231,7 @@ output_t<int> world_cup_t::get_ith_pointless_ability(int i)
 {
 	if(i < 0)
         return StatusType::FAILURE;
-    AVLNode<shared_ptr<Team>>* teamNode = teamsById.getIthNode(i + 1);
+    AVLNode<shared_ptr<Team>>* teamNode = teamsByAbility.getIthNode(i + 1);
     if(teamNode == nullptr)
         return StatusType::FAILURE;
 
@@ -251,10 +251,14 @@ output_t<permutation_t> world_cup_t::get_partial_spirit(int playerId)
 
     if(root == nullptr)
     {
+        if(player->teamPointer == nullptr)
+            return StatusType::FAILURE;
         return player->spiritAux;
     }
     else
     {
+        if(root->teamPointer == nullptr)
+            return StatusType::FAILURE;
         return root->spiritAux * player->spiritAux;
     }
 }

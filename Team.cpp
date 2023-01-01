@@ -6,7 +6,7 @@
 #include "Player.h"
 
 Team::Team(int teamId) : teamId(teamId), points(0),
-totalPlayers(0), totalAbility(0), teamSpirit(), isValid(false), rootPlayer(nullptr)
+totalPlayers(0), totalAbility(0), teamSpirit(permutation_t::neutral()), isValid(false), rootPlayer(nullptr)
 {}
 
 void Team::buyTeam(Team *boughtTeam)
