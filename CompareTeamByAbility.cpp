@@ -29,5 +29,12 @@ bool CompareTeamByAbility::isLeftSmaller(std::shared_ptr<Team> &team, std::share
 
 bool CompareTeamByAbility::isEqual(std::shared_ptr<Team> &team, std::shared_ptr<Team> &currentTeam)
 {
-    return team->teamId == currentTeam->teamId;
+    if(team->totalAbility == currentTeam->totalAbility)
+    {
+        if(team->teamId == currentTeam->teamId)
+            return true;
+    }
+    return false;
+
+//    return team->teamId == currentTeam->teamId;
 }

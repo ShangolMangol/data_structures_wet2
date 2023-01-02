@@ -70,6 +70,8 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
         return StatusType::FAILURE;
 
     try {
+        teamsByAbility.root = teamsByAbility.deleteNode(teamsByAbility.root, teamNode->data);
+
         shared_ptr<Player> newPlayer = shared_ptr<Player>(new Player(playerId, spirit,
                                                                      gamesPlayed, ability, cards,
                                                                      goalKeeper, teamNode->data->rootPlayer,
@@ -84,6 +86,8 @@ StatusType world_cup_t::add_player(int playerId, int teamId,
 
         if (goalKeeper)
             teamNode->data->isValid = true;
+
+        teamsByAbility.root = teamsByAbility.insert(teamsByAbility.root, teamNode->data);
     }
     catch(std::bad_alloc& e)
     {
